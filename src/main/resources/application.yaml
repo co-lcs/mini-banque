@@ -1,3 +1,17 @@
 spring:
   application:
     name: mini-banque
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    url: jdbc:h2:mem:mydb
+  jpa:
+    show-sql: true # Affiche le SQL dans la console
+    properties:
+      hibernate:
+        format_sql: true # Formate et rend le SQL plus lisible
+  logging:
+    level:
+      org.hibernate.SQL: DEBUG # Active les logs de niveau DEBUG pour les requetes SQL
