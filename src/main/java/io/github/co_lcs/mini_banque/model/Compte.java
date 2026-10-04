@@ -1,10 +1,15 @@
 package io.github.co_lcs.mini_banque.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Column;
+import jakarta.persistence.GenerationType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Currency;
+import java.util.Objects;
 
 @Entity
 public class Compte {
@@ -18,7 +23,7 @@ public class Compte {
     @Column(nullable = false)
     private String titulaire;
 
-    @Column(scale = 2, nullable = false) // On veut afficher les centimes, pas au-delà
+    @Column(scale = 2, nullable = false, precision = 14) // On veut afficher les centimes, pas au-delà, et la précision de 9 pour max 999 999 999 999.99 eur
     private BigDecimal solde;
 
     @Column(nullable = false)
@@ -60,9 +65,5 @@ public class Compte {
 
     public Currency getDevise() {
         return this.devise;
-    }
-
-    public void setDevise(Currency devise) {
-        this.devise = devise;
     }
 }
