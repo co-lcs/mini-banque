@@ -36,11 +36,12 @@ public class Compte {
     }
 
     public Compte(String iban, String titulaire, BigDecimal solde, LocalDate dateOuverture, Currency devise ) {
-        this.iban = iban;
-        this.titulaire = titulaire;
-        this.solde = solde;
-        this.dateOuverture = dateOuverture;
-        this.devise = devise;
+        // Validation immédiate (Fail-Fast)
+        this.iban = Objects.requireNonNull(iban, "iban obligatoire");
+        this.titulaire = Objects.requireNonNull(titulaire, "titulaire obligatoire");
+        this.solde = Objects.requireNonNull(solde, "solde obligatoire");
+        this.dateOuverture = Objects.requireNonNull(dateOuverture, "dateOuverture obligatoire");
+        this.devise = Objects.requireNonNull(devise, "devise obligatoire");
     }
 
     public Long getId() {
