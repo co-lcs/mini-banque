@@ -29,7 +29,7 @@ class CompteRepositoryTests {
 
     @Test
     @DisplayName("Doit rejeter la persistance d'un compte dont l'IBAN existe déjà")
-    void shouldRefuseSaveWhenNonUniqueDataProvided() {
+    void shouldRefuseSaveWhenNonUniqueIbanProvided() {
         Compte testCompteValide = new Compte("FR7630002000101234567890189", "Titulaire Test 1", new BigDecimal("40.00"), LocalDate.of(2026, 10, 12), Currency.getInstance("EUR"));
         compteRepository.save(testCompteValide);
 
