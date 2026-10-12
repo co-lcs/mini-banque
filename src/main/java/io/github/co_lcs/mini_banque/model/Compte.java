@@ -23,7 +23,7 @@ public class Compte {
     @Column(nullable = false)
     private String titulaire;
 
-    @Column(scale = 2, nullable = false, precision = 14) // On veut afficher les centimes, pas au-delà, et la précision de 9 pour max 999 999 999 999.99 eur
+    @Column(scale = 2, nullable = false, precision = 14) // On veut afficher les centimes, pas au-delà, et la précision de 14 pour max 999 999 999 999.99 eur
     private BigDecimal solde;
 
     @Column(nullable = false)
