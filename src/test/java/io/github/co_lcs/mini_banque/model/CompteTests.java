@@ -15,9 +15,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CompteTests {
 
-    private record compteArguments(String iban, String titulaire, BigDecimal solde, LocalDate dateOuverture, Currency devise) {}
+    private record CompteArguments(String iban, String titulaire, BigDecimal solde, LocalDate dateOuverture, Currency devise) {}
 
-    private static Stream<compteArguments> invalidArgumentsProvider() {
+    private static Stream<CompteArguments> invalidArgumentsProvider() {
         String validIban = "FR7630002000101234567890189";
         String validTitulaire = "Titulaire Test";
         BigDecimal validSolde = new BigDecimal("40.00");
@@ -25,18 +25,18 @@ class CompteTests {
         Currency validDevise = Currency.getInstance("EUR");
 
         return Stream.of(
-                new compteArguments(null, validTitulaire, validSolde, validDateOuverture, validDevise),
-                new compteArguments(validIban, null, validSolde, validDateOuverture, validDevise),
-                new compteArguments(validIban, validTitulaire, null, validDateOuverture, validDevise),
-                new compteArguments(validIban, validTitulaire, validSolde, null, validDevise),
-                new compteArguments(validIban, validTitulaire, validSolde, validDateOuverture, null)
+                new CompteArguments(null, validTitulaire, validSolde, validDateOuverture, validDevise),
+                new CompteArguments(validIban, null, validSolde, validDateOuverture, validDevise),
+                new CompteArguments(validIban, validTitulaire, null, validDateOuverture, validDevise),
+                new CompteArguments(validIban, validTitulaire, validSolde, null, validDevise),
+                new CompteArguments(validIban, validTitulaire, validSolde, validDateOuverture, null)
         );
     }
 
     @ParameterizedTest
     @MethodSource("invalidArgumentsProvider")
     @DisplayName("Doit rejeter l'instancisation si un champts est nul")
-    void shouldRejectInstanciationWhenFieldIsNull(compteArguments args) {
+    void shouldRejectInstanciationWhenFieldIsNull(CompteArguments args) {
         assertThatThrownBy(() -> new Compte(args.iban(), args.titulaire(), args.solde(), args.dateOuverture(), args.devise())).isInstanceOf(NullPointerException.class);
     }
 
