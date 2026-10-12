@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.Currency;
 
 @DataJpaTest
-public class CompteRepositoryTests {
+class CompteRepositoryTests {
     @Autowired
     private CompteRepository compteRepository;
 
