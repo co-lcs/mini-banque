@@ -5,7 +5,10 @@ import io.github.co_lcs.mini_banque.repository.CompteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.Clock;
+import java.time.LocalDate;
+import java.util.Currency;
 
 @Service
 public class CompteService {
@@ -19,12 +22,14 @@ public class CompteService {
         this.clock = clock;
     }
 
-    public Compte saveCompte(Compte compte){
+    public Compte saveCompte(String iban, String titulaire, BigDecimal solde, Currency devise){
+        LocalDate dateOuverture = LocalDate.now(clock);
+        Compte compte = new Compte(iban, titulaire, solde, dateOuverture, devise);
         return compteRepository.save(compte);
     }
 
     public Compte getCompteById(final Long id){
-        return compteRepository.findById(id).orElseThrow(() -> new CompteNotFoundException("Compte introuvable : " + id));
+        return compteRepository.findById(id).orElseThrow(() -> new CompteNotFoundException(id.toString()));
 
     }
 
