@@ -1,7 +1,7 @@
 package io.github.co_lcs.mini_banque.model;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 
@@ -14,10 +14,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
 class CompteTests {
-
-    private record CompteArguments(String iban, String titulaire, BigDecimal solde, LocalDate dateOuverture, Currency devise) {}
-
-    private static Stream<CompteArguments> invalidArgumentsProvider() {
+    private static Stream<Arguments> invalidArgumentsProvider() {
         String validIban = "FR7630002000101234567890189";
         String validTitulaire = "Titulaire Test";
         BigDecimal validSolde = new BigDecimal("40.00");
@@ -25,20 +22,23 @@ class CompteTests {
         Currency validDevise = Currency.getInstance("EUR");
 
         return Stream.of(
-                new CompteArguments(null, validTitulaire, validSolde, validDateOuverture, validDevise),
-                new CompteArguments(validIban, null, validSolde, validDateOuverture, validDevise),
-                new CompteArguments(validIban, validTitulaire, null, validDateOuverture, validDevise),
-                new CompteArguments(validIban, validTitulaire, validSolde, null, validDevise),
-                new CompteArguments(validIban, validTitulaire, validSolde, validDateOuverture, null)
+                Arguments.of(null, validTitulaire, validSolde, validDateOuverture, validDevise, "iban obligatoire"),
+                Arguments.of(validIban, null, validSolde, validDateOuverture, validDevise, "titulaire obligatoire"),
+                Arguments.of(validIban, validTitulaire, null, validDateOuverture, validDevise, "solde obligatoire"),
+                Arguments.of(validIban, validTitulaire, validSolde, null, validDevise, "dateOuverture obligatoire"),
+                Arguments.of(validIban, validTitulaire, validSolde, validDateOuverture, null, "devise obligatoire")
         );
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "[{index}] Doit rejeter l'instanciation si {5}")
     @MethodSource("invalidArgumentsProvider")
-    @DisplayName("Doit rejeter l'instantiation si un champs est nul")
-    void shouldRejectInstanciationWhenFieldIsNull(CompteArguments args) {
-        assertThatThrownBy(() -> new Compte(args.iban(), args.titulaire(), args.solde(), args.dateOuverture(), args.devise())).isInstanceOf(NullPointerException.class);
+    void shouldRejectInstantiationWhenFieldIsNull(
+        String iban,
+        String titulaire,
+        BigDecimal solde,
+        LocalDate dateOuverture,
+        Currency devise,
+        String expectedMessage) {
+        assertThatThrownBy(() -> new Compte(iban, titulaire, solde, dateOuverture, devise)).isInstanceOf(NullPointerException.class).hasMessage(expectedMessage);
     }
-
 }
-
