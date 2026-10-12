@@ -34,6 +34,6 @@ class CompteRepositoryTests {
         compteRepository.save(testCompteValide);
 
         Compte testCompteDoublon = new Compte("FR7630002000101234567890189", "Titulaire Test 2", new BigDecimal("40.00"), LocalDate.of(2026, 10, 12), Currency.getInstance("EUR"));
-        assertThatThrownBy(() -> compteRepository.save(testCompteDoublon)).isInstanceOf(DataIntegrityViolationException.class); // Verifie que l'exception intercepter par assertThatThrownBy correspond à l'erreur attendu au niveau de la base de donnée (IBAN unique)
+        assertThatThrownBy(() -> compteRepository.save(testCompteDoublon)).isInstanceOf(DataIntegrityViolationException.class);
     }
 }
