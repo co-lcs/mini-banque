@@ -35,7 +35,7 @@ class CompteTests {
 
     @ParameterizedTest
     @MethodSource("invalidArgumentsProvider")
-    @DisplayName("Doit rejeter l'instancisation si un champts est nul")
+    @DisplayName("Doit rejeter l'instantiation si un champs est nul")
     void shouldRejectInstanciationWhenFieldIsNull(CompteArguments args) {
         assertThatThrownBy(() -> new Compte(args.iban(), args.titulaire(), args.solde(), args.dateOuverture(), args.devise())).isInstanceOf(NullPointerException.class);
     }
