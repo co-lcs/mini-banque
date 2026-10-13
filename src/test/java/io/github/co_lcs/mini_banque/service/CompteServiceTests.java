@@ -19,7 +19,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -39,14 +38,15 @@ class CompteServiceTests {
 
     @Test
     void saveCompteShouldSetDateFromClockAndPersist() {
-        when(compteRepository.save(any(Compte.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        fixedClock = Clock.fixed(Instant.parse("2026-06-15T23:30:00Z"), ZoneId.of("Europe/Paris"));
+        compteService = new CompteService(compteRepository, fixedClock);
 
         compteService.saveCompte("FR7630002000101234567890189", "titulaire test", BigDecimal.valueOf(1000), Currency.getInstance("EUR"));
 
         ArgumentCaptor<Compte> captor = ArgumentCaptor.forClass(Compte.class);
         verify(compteRepository).save(captor.capture());
 
-        assertThat(captor.getValue().getDateOuverture()).isEqualTo(LocalDate.now(fixedClock));
+        assertThat(captor.getValue().getDateOuverture()).isEqualTo(LocalDate.of(2026, 6, 16));
     }
 
     @Test
