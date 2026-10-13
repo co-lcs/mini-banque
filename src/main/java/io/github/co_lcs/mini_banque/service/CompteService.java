@@ -13,8 +13,7 @@ import java.util.Currency;
 @Service
 public class CompteService {
 
-    @Autowired
-    private CompteRepository compteRepository;
+    private final CompteRepository compteRepository;
     private final Clock clock;
 
     public CompteService(CompteRepository compteRepository, Clock clock) {
