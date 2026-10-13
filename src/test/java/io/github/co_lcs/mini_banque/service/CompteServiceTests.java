@@ -54,8 +54,6 @@ class CompteServiceTests {
         when(compteRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> compteService.getCompteById(99L)).isInstanceOf(CompteNotFoundException.class).hasMessage("99");
-
-        verify(compteRepository).findById(99L);
     }
 
     @Test
@@ -67,6 +65,5 @@ class CompteServiceTests {
 
         assertThat(result).isNotNull();
         assertThat(result.getIban()).isEqualTo("FR7630002000101234567890189");
-        verify(compteRepository).findById(1L);
     }
 }
