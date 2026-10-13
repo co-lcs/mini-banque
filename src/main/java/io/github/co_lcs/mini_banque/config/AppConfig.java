@@ -11,6 +11,5 @@ public class AppConfig {
 
     @Bean
     public Clock clock(){
-        return Clock.system(ZoneId.of("Europe/Paris")); // Paris parce que je suis en France
-    }
+        return Clock.system(ZoneId.of("Europe/Paris")); }
 }
