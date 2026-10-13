@@ -11,5 +11,6 @@ public class AppConfig {
 
     @Bean
     public Clock clock(){
-        return Clock.system(ZoneId.of("Europe/Paris")); }
+        return Clock.system(ZoneId.of("Europe/Paris")); // Fuseau horaire français car banque française
+    }
 }
