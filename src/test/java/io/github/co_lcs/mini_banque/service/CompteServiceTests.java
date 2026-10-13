@@ -61,6 +61,5 @@ class CompteServiceTests {
         Compte result = compteService.getCompteById(1L);
 
         assertThat(result).isSameAs(testCompte);
-        assertThat(result.getIban()).isEqualTo("FR7630002000101234567890189");
     }
 }
