@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.Currency;
+import java.util.List;
 
 @Service
 public class CompteService {
@@ -31,7 +32,7 @@ public class CompteService {
         return compteRepository.findById(id).orElseThrow(() -> new CompteNotFoundException("Compte introuvable avec l'identifiant : " + id));
     }
 
-    public Iterable<Compte> getComptes() {
+    public List<Compte> getComptes() {
         return compteRepository.findAll();
     }
 
