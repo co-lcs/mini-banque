@@ -28,8 +28,7 @@ public class CompteService {
     }
 
     public Compte getCompteById(final Long id){
-        return compteRepository.findById(id).orElseThrow(() -> new CompteNotFoundException(id.toString()));
-
+        return compteRepository.findById(id).orElseThrow(() -> new CompteNotFoundException("Compte introuvable avec l'identifiant : " + id));
     }
 
     public Iterable<Compte> getComptes() {

@@ -53,7 +53,7 @@ class CompteServiceTests {
     void getCompteByIdShouldThrowExceptionWhenIdNotFound(){
         when(compteRepository.findById(99L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> compteService.getCompteById(99L)).isInstanceOf(CompteNotFoundException.class).hasMessage("99");
+        assertThatThrownBy(() -> compteService.getCompteById(99L)).isInstanceOf(CompteNotFoundException.class).hasMessage("Compte introuvable avec l'identifiant : 99");
     }
 
     @Test
