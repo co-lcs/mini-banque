@@ -2,7 +2,6 @@ package io.github.co_lcs.mini_banque.service;
 
 import io.github.co_lcs.mini_banque.model.Compte;
 import io.github.co_lcs.mini_banque.repository.CompteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
