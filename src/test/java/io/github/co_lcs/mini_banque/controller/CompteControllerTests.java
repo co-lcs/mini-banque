@@ -97,7 +97,7 @@ public class CompteControllerTests {
                 .andExpect(header().string("Location", "http://localhost/api/comptes/1"))
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.titulaire").value("titulaire test"))
-                .andExpect(jsonPath("$.devise").value("euro"));
+                .andExpect(jsonPath("$.devise").value("EUR"));
 
     }
 }

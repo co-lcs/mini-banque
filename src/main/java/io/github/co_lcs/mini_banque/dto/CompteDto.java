@@ -20,7 +20,7 @@ public record CompteDto (
                 compte.getTitulaire(),
                 compte.getSolde(),
                 compte.getDateOuverture(),
-                compte.getDevise().getDisplayName()
+                compte.getDevise().getCurrencyCode()
         );
     }
 }
