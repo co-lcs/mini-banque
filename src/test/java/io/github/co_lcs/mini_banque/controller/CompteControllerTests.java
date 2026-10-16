@@ -63,7 +63,8 @@ public class CompteControllerTests {
         given(compteService.getCompteById(99L)).willThrow(new CompteNotFoundException("Compte introuvable avec l'identifiant : 99"));
 
         mockMvc.perform(get("/api/comptes/99"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.detail").value("Compte introuvable avec l'identifiant : 99"));
     }
 
     @Test
