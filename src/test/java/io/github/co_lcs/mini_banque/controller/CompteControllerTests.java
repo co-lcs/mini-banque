@@ -18,11 +18,13 @@ import java.time.LocalDate;
 import java.util.Currency;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -124,6 +126,28 @@ class CompteControllerTests {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.detail").value("Violation de contrainte"));
+    }
+
+    @Test
+    void shouldReturn400WhenInvalidFieldProvided() throws Exception {
+        String invalidTitulaire = "   ";
+        CompteRequest request = new CompteRequest(
+                "FR7630002000101234567890189",
+                invalidTitulaire,
+                new BigDecimal("1000"),
+                Currency.getInstance("EUR")
+        );
+        String responseBody = mockMvc.perform(post("/api/comptes")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType("application/problem+json"))
+                .andExpect(jsonPath("$.errors.titulaire").exists())
+                .andReturn().getResponse().getContentAsString();
+
+        assertThat(responseBody).doesNotContain(invalidTitulaire);
+
+        then(compteService).shouldHaveNoInteractions();
     }
 
     private Compte createDefaultMockCompte() {
