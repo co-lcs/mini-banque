@@ -62,8 +62,8 @@ class CompteControllerTests {
     void newCompteShouldReturn201AndLocationHeader() throws Exception {
         CompteRequest request = new CompteRequest(
                 "FR7630002000101234567890189",
-                "Titulaire Test",
-                new BigDecimal("40.00"),
+                "titulaire test",
+                new BigDecimal("1000"),
                 Currency.getInstance("EUR")
         );
 
