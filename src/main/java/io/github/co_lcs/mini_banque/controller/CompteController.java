@@ -1,6 +1,7 @@
 package io.github.co_lcs.mini_banque.controller;
 
 import io.github.co_lcs.mini_banque.dto.CompteDto;
+import io.github.co_lcs.mini_banque.dto.CreateCompteRequest;
 import io.github.co_lcs.mini_banque.model.Compte;
 import io.github.co_lcs.mini_banque.service.CompteService;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +38,13 @@ public class CompteController {
     }
 
     @PostMapping
-    public ResponseEntity<CompteDto> newCompte(@RequestBody Compte compte) {
-        Compte savedCompte = compteService.saveCompte(compte.getIban(), compte.getTitulaire(), compte.getSolde(), compte.getDevise());
+    public ResponseEntity<CompteDto> newCompte(@RequestBody CreateCompteRequest request) {
+        Compte savedCompte = compteService.saveCompte(
+                request.iban(),
+                request.titulaire(),
+                request.solde(),
+                request.devise()
+        );
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedCompte.getId())
