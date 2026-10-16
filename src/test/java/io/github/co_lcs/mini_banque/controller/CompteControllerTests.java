@@ -1,6 +1,7 @@
 package io.github.co_lcs.mini_banque.controller;
 
 import io.github.co_lcs.mini_banque.dto.CompteDto;
+import io.github.co_lcs.mini_banque.dto.CreateCompteRequest;
 import io.github.co_lcs.mini_banque.model.Compte;
 import io.github.co_lcs.mini_banque.service.CompteNotFoundException;
 import io.github.co_lcs.mini_banque.service.CompteService;
@@ -67,25 +68,36 @@ public class CompteControllerTests {
 
     @Test
     void newCompteShouldReturn201AndLocationHeader() throws Exception {
-        Compte inputCompte = new Compte("FR7630002000101234567890189", "Titulaire Test", new BigDecimal("40.00"), LocalDate.of(2026, 10, 12), Currency.getInstance("EUR"));
+        CreateCompteRequest request = new CreateCompteRequest(
+                "FR7630002000101234567890189",
+                "Titulaire Test",
+                new BigDecimal("40.00"),
+                Currency.getInstance("EUR")
+        );
 
         Compte savedCompte = mock(Compte.class);
         given(savedCompte.getId()).willReturn(1L);
         given(savedCompte.getIban()).willReturn("FR7630002000101234567890189");
         given(savedCompte.getTitulaire()).willReturn("titulaire test");
         given(savedCompte.getSolde()).willReturn(BigDecimal.valueOf(1000));
-        given(savedCompte.getDateOuverture()).willReturn(LocalDate.of(2026, 10, 12));
+        given(savedCompte.getDateOuverture()).willReturn(LocalDate.now());
         given(savedCompte.getDevise()).willReturn(Currency.getInstance("EUR"));
 
-        given(compteService.saveCompte(any(), any(), any(), any())).willReturn(savedCompte);
+        given(compteService.saveCompte(
+                request.iban(),
+                request.titulaire(),
+                request.solde(),
+                request.devise()
+        )).willReturn(savedCompte);
 
         mockMvc.perform(post("/api/comptes")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(inputCompte)))
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "http://localhost/api/comptes/1"))
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.titulaire").value("titulaire test"));
+                .andExpect(jsonPath("$.titulaire").value("titulaire test"))
+                .andExpect(jsonPath("$.devise").value("euro"));
 
     }
 }
