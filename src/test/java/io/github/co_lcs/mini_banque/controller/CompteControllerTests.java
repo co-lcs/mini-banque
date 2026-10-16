@@ -107,7 +107,7 @@ class CompteControllerTests {
         given(mockCompte.getIban()).willReturn("FR7630002000101234567890189");
         given(mockCompte.getTitulaire()).willReturn("titulaire test");
         given(mockCompte.getSolde()).willReturn(BigDecimal.valueOf(1000));
-        given(mockCompte.getDateOuverture()).willReturn(LocalDate.now());
+        given(mockCompte.getDateOuverture()).willReturn(LocalDate.of(2026, 1, 1));
         given(mockCompte.getDevise()).willReturn(Currency.getInstance("EUR"));
         return mockCompte;
     }
