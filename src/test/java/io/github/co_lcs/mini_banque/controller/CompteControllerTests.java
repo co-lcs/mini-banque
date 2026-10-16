@@ -2,6 +2,7 @@ package io.github.co_lcs.mini_banque.controller;
 
 import io.github.co_lcs.mini_banque.dto.CompteDto;
 import io.github.co_lcs.mini_banque.model.Compte;
+import io.github.co_lcs.mini_banque.service.CompteNotFoundException;
 import io.github.co_lcs.mini_banque.service.CompteService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,13 @@ public class CompteControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.titulaire").value("titulaire test"));
+    }
+
+    @Test
+    void shouldReturn404WhenIdNotFound() throws Exception {
+        given(compteService.getCompteById(99L)).willThrow(new CompteNotFoundException("Compte introuvable avec l'identifiant : 99"));
+
+        mockMvc.perform(get("/api/comptes/99"))
+                .andExpect(status().isNotFound());
     }
 }
