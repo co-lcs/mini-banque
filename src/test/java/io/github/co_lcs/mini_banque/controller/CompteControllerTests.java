@@ -1,6 +1,6 @@
 package io.github.co_lcs.mini_banque.controller;
 
-import io.github.co_lcs.mini_banque.dto.CreateCompteRequest;
+import io.github.co_lcs.mini_banque.dto.CompteRequest;
 import io.github.co_lcs.mini_banque.model.Compte;
 import io.github.co_lcs.mini_banque.service.CompteNotFoundException;
 import io.github.co_lcs.mini_banque.service.CompteService;
@@ -60,7 +60,7 @@ class CompteControllerTests {
 
     @Test
     void newCompteShouldReturn201AndLocationHeader() throws Exception {
-        CreateCompteRequest request = new CreateCompteRequest(
+        CompteRequest request = new CompteRequest(
                 "FR7630002000101234567890189",
                 "Titulaire Test",
                 new BigDecimal("40.00"),

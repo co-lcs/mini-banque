@@ -1,7 +1,7 @@
 package io.github.co_lcs.mini_banque.controller;
 
-import io.github.co_lcs.mini_banque.dto.CompteDto;
-import io.github.co_lcs.mini_banque.dto.CreateCompteRequest;
+import io.github.co_lcs.mini_banque.dto.CompteResponse;
+import io.github.co_lcs.mini_banque.dto.CompteRequest;
 import io.github.co_lcs.mini_banque.model.Compte;
 import io.github.co_lcs.mini_banque.service.CompteService;
 import org.springframework.http.ResponseEntity;
@@ -26,19 +26,19 @@ public class CompteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CompteDto> getCompteById(@PathVariable Long id) {
+    public ResponseEntity<CompteResponse> getCompteById(@PathVariable Long id) {
         Compte compte = compteService.getCompteById(id);
-        return ResponseEntity.ok(CompteDto.fromEntity(compte));
+        return ResponseEntity.ok(CompteResponse.fromEntity(compte));
     }
 
     @GetMapping
-    public ResponseEntity<List<CompteDto>> getComptes() {
-        List<CompteDto> comptes = compteService.getComptes().stream().map(CompteDto::fromEntity).toList();
+    public ResponseEntity<List<CompteResponse>> getComptes() {
+        List<CompteResponse> comptes = compteService.getComptes().stream().map(CompteResponse::fromEntity).toList();
         return ResponseEntity.ok(comptes);
     }
 
     @PostMapping
-    public ResponseEntity<CompteDto> newCompte(@RequestBody CreateCompteRequest request) {
+    public ResponseEntity<CompteResponse> newCompte(@RequestBody CompteRequest request) {
         Compte savedCompte = compteService.saveCompte(
                 request.iban(),
                 request.titulaire(),
@@ -50,7 +50,7 @@ public class CompteController {
                 .buildAndExpand(savedCompte.getId())
                 .toUri();
 
-        return ResponseEntity.created(location).body(CompteDto.fromEntity(savedCompte));
+        return ResponseEntity.created(location).body(CompteResponse.fromEntity(savedCompte));
     }
 
 }

@@ -5,7 +5,7 @@ import io.github.co_lcs.mini_banque.model.Compte;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public record CompteDto (
+public record CompteResponse(
     Long id,
     String iban,
     String titulaire,
@@ -13,8 +13,8 @@ public record CompteDto (
     LocalDate dateOuverture,
     String devise
 ) {
-    public static CompteDto fromEntity(Compte compte) {
-        return new CompteDto(
+    public static CompteResponse fromEntity(Compte compte) {
+        return new CompteResponse(
                 compte.getId(),
                 compte.getIban(),
                 compte.getTitulaire(),
