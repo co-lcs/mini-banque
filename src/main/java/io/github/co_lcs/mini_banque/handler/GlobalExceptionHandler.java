@@ -6,8 +6,6 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.net.URI;
-
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -18,7 +16,7 @@ public class GlobalExceptionHandler {
                 ex.getMessage()
         );
 
-        problemDetail.setTitle("Compte Not Found");
+        problemDetail.setTitle("Compte Non Trouvé");
 
         return problemDetail;
     }

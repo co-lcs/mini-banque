@@ -1,7 +1,5 @@
 package io.github.co_lcs.mini_banque.controller;
 
-import com.jayway.jsonpath.JsonPath;
-import io.github.co_lcs.mini_banque.dto.CompteDto;
 import io.github.co_lcs.mini_banque.dto.CreateCompteRequest;
 import io.github.co_lcs.mini_banque.model.Compte;
 import io.github.co_lcs.mini_banque.service.CompteNotFoundException;
@@ -26,12 +24,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.mockito.ArgumentMatchers.any;
 
 @WebMvcTest(CompteController.class)
-public class CompteControllerTests {
-
-
+class CompteControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
@@ -116,5 +111,4 @@ public class CompteControllerTests {
         given(mockCompte.getDevise()).willReturn(Currency.getInstance("EUR"));
         return mockCompte;
     }
-
 }
