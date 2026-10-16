@@ -1,6 +1,8 @@
 package io.github.co_lcs.mini_banque.handler;
 
 import io.github.co_lcs.mini_banque.service.CompteNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,8 +38,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return problemDetail;
     }
 
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ProblemDetail handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        log.warn("Violation de contrainte d'intégrité", ex);
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.CONFLICT,
                 "Violation de contrainte"
