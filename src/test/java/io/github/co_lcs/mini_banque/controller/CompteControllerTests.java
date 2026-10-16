@@ -41,13 +41,7 @@ public class CompteControllerTests {
 
     @Test
     void shouldReturnCompteWhenIdExists() throws Exception {
-        Compte mockCompte = mock(Compte.class);
-        given(mockCompte.getId()).willReturn(1L);
-        given(mockCompte.getIban()).willReturn("FR7630002000101234567890189");
-        given(mockCompte.getTitulaire()).willReturn("titulaire test");
-        given(mockCompte.getSolde()).willReturn(BigDecimal.valueOf(1000));
-        given(mockCompte.getDateOuverture()).willReturn(LocalDate.of(2026, 10, 12));
-        given(mockCompte.getDevise()).willReturn(Currency.getInstance("EUR"));
+        Compte mockCompte = createDefaultMockCompte();
 
         given(compteService.getCompteById(1L)).willReturn(mockCompte);
 
@@ -76,13 +70,7 @@ public class CompteControllerTests {
                 Currency.getInstance("EUR")
         );
 
-        Compte savedCompte = mock(Compte.class);
-        given(savedCompte.getId()).willReturn(1L);
-        given(savedCompte.getIban()).willReturn("FR7630002000101234567890189");
-        given(savedCompte.getTitulaire()).willReturn("titulaire test");
-        given(savedCompte.getSolde()).willReturn(BigDecimal.valueOf(1000));
-        given(savedCompte.getDateOuverture()).willReturn(LocalDate.now());
-        given(savedCompte.getDevise()).willReturn(Currency.getInstance("EUR"));
+        Compte savedCompte = createDefaultMockCompte();
 
         given(compteService.saveCompte(
                 request.iban(),
@@ -101,4 +89,16 @@ public class CompteControllerTests {
                 .andExpect(jsonPath("$.devise").value("EUR"));
 
     }
+
+    private Compte createDefaultMockCompte() {
+        Compte mockCompte = mock(Compte.class);
+        given(mockCompte.getId()).willReturn(1L);
+        given(mockCompte.getIban()).willReturn("FR7630002000101234567890189");
+        given(mockCompte.getTitulaire()).willReturn("titulaire test");
+        given(mockCompte.getSolde()).willReturn(BigDecimal.valueOf(1000));
+        given(mockCompte.getDateOuverture()).willReturn(LocalDate.now());
+        given(mockCompte.getDevise()).willReturn(Currency.getInstance("EUR"));
+        return mockCompte;
+    }
+
 }
