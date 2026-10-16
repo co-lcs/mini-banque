@@ -129,7 +129,7 @@ class CompteControllerTests {
     }
 
     @Test
-    void shouldReturn400WhenInvalidFieldProvided() throws Exception {
+    void shouldReturn400WhenInvalidTitulaireProvided() throws Exception {
         String invalidTitulaire = "   ";
         CompteRequest request = new CompteRequest(
                 "FR7630002000101234567890189",
@@ -146,6 +146,26 @@ class CompteControllerTests {
                 .andReturn().getResponse().getContentAsString();
 
         assertThat(responseBody).doesNotContain(invalidTitulaire);
+
+        then(compteService).shouldHaveNoInteractions();
+    }
+
+    @Test
+    void shouldReturn400WhenInvalidCurrencyProvided() throws Exception {
+        String invalidJson = """
+                {
+                    "iban": "FR7630002000101234567890189",
+                    "titulaire": "titulaire test",
+                    "solde": "40.00",
+                    "devise": "EURO"
+                }
+                """;
+        mockMvc.perform(post("/api/comptes")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(invalidJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType("application/problem+json"))
+                .andExpect(jsonPath("$.errors.devise").exists());
 
         then(compteService).shouldHaveNoInteractions();
     }
