@@ -7,6 +7,7 @@ import io.github.co_lcs.mini_banque.service.CompteService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -99,6 +101,29 @@ class CompteControllerTests {
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].id").value(1))
                 .andExpect(jsonPath("$[0].titulaire").value("titulaire test"));
+    }
+
+    @Test
+    void shouldReturn409WhenIbanAlreadyExists() throws Exception {
+        CompteRequest request = new CompteRequest(
+                "FR7630002000101234567890189",
+                "titulaire test",
+                new BigDecimal("1000"),
+                Currency.getInstance("EUR")
+        );
+
+        given(compteService.saveCompte(
+                request.iban(),
+                request.titulaire(),
+                request.solde(),
+                request.devise()
+        )).willThrow(new DataIntegrityViolationException("Violation de contrainte"));
+
+        mockMvc.perform(post("/api/comptes")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.detail").value("Violation de contrainte"));
     }
 
     private Compte createDefaultMockCompte() {
