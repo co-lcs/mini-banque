@@ -1,5 +1,6 @@
 package io.github.co_lcs.mini_banque.controller;
 
+import com.jayway.jsonpath.JsonPath;
 import io.github.co_lcs.mini_banque.dto.CompteDto;
 import io.github.co_lcs.mini_banque.dto.CreateCompteRequest;
 import io.github.co_lcs.mini_banque.model.Compte;
@@ -16,6 +17,7 @@ import tools.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Currency;
+import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -88,6 +90,20 @@ public class CompteControllerTests {
                 .andExpect(jsonPath("$.titulaire").value("titulaire test"))
                 .andExpect(jsonPath("$.devise").value("EUR"));
 
+    }
+
+    @Test
+    void shouldReturnListOfCompte() throws Exception {
+        Compte mockCompte = createDefaultMockCompte();
+
+        given(compteService.getComptes()).willReturn(List.of(mockCompte));
+
+        mockMvc.perform(get("/api/comptes").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].titulaire").value("titulaire test"));
     }
 
     private Compte createDefaultMockCompte() {
