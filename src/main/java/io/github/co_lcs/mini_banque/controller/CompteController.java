@@ -25,7 +25,7 @@ public class CompteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CompteDto> getUserById(@PathVariable Long id) {
+    public ResponseEntity<CompteDto> getCompteById(@PathVariable Long id) {
         Compte compte = compteService.getCompteById(id);
         return ResponseEntity.ok(CompteDto.fromEntity(compte));
     }
